@@ -47,6 +47,7 @@ module.exports = {
   messages: {
     'run'() {
       Editor.log('删除空文件夹');
+      deletedDirs = [];
       // 执行删除空文件夹操作
       traverseDirectory(Editor.Project.path + "/assets");
     }
