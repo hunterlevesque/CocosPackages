@@ -5,7 +5,7 @@
   "author": "Cocos Creator",
   "main": "main.js",
   "main-menu": {
-    "i18n:MAIN_MENU.package.title/删除空文件夹/run": {
+    "i18n:MAIN_MENU.package.title/删除空文件夹/开始": {
       "message": "delete_empty_dir:run"
     }
   },

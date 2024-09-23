@@ -13,17 +13,13 @@ function traverseDirectory(directory) {
     // 检查是否为空目录 或者 只有.DS_Store文件
     if (files.length === 0 || (files.length === 1 && files[0].name === ".DS_Store")) {
       var delete_dir = 'db://assets/' + path.relative(Editor.Project.path + "/assets", directory);
-      if (deletedDirs.indexOf(delete_dir) >= 0) {
-        return;
+      if (deletedDirs.indexOf(delete_dir) == -1) {
+        Editor.log(`删除文件夹: ${directory}`);
+        deletedDirs.push(delete_dir);
+        Editor.assetdb.delete([delete_dir], function (err, results) {
+          traverseDirectory(path.dirname(directory)); // 递归删除父目录
+        });
       }
-      Editor.assetdb.delete([
-        delete_dir
-      ]);
-      Editor.log(`删除文件夹: ${directory}`);
-      deletedDirs.push(delete_dir);
-      traverseDirectory(path.dirname(directory)); // 递归删除父目录
-      // Editor.assetdb.refresh('db://assets/', function (err, results) {
-      // });
     } else {
       // 遍历每个文件或文件夹
       files.forEach(file => {
@@ -50,8 +46,7 @@ module.exports = {
   // register your ipc messages here
   messages: {
     'run'() {
-      Editor.log('删除空文件夹操作');
-      Editor.log(Editor.Project.path + "/assets");
+      Editor.log('删除空文件夹');
       // 执行删除空文件夹操作
       traverseDirectory(Editor.Project.path + "/assets");
     }
